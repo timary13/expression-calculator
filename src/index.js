@@ -5,18 +5,23 @@ function eval() {
 
 function expressionCalculator(expr) {
     console.log(expr);
-    let r = (expr.match(/\(|\)/g)||[]).length;
-    console.log("r%2 " + (0%2 == 0));
-    return findBrackets();
+    //delete whitespaces to avoid empty cicle
+    //replace minus to avoid losing num<0
+    expr = expr.replace(/ /g, '');
+    expr = expr.replace(/-/g, '^');
+
+    while (expr.indexOf('(') !== -1 || expr.indexOf(')') !== -1)
+        expr = findBrackets(expr);
+
+    return plus(expr);
 
     //find brackets
-    function findBrackets() {
+    function findBrackets(expr) {
         let openBracketIndex = expr.lastIndexOf('(');
         let closeBracketIndex = expr.indexOf(')');
         console.log("openBracketIndex "+ openBracketIndex + " closeBracketIndex " + closeBracketIndex);
         //without one bracket from pair
         if(((expr.match(/\(|\)/g)||[]).length)%2 != 0) {
-            console.log("here");
             throw ("ExpressionError: Brackets must be paired");
         }
         //if no one brackets
@@ -29,8 +34,7 @@ function expressionCalculator(expr) {
         }
         let z = (plus(expr.slice(openBracketIndex + 1, closeBracketIndex))).toString();
 
-        let c = plus(expr.slice(0, openBracketIndex) + z + expr.slice(closeBracketIndex+1));
-        console.log(c);
+        let c = expr.slice(0, openBracketIndex) + z + expr.slice(closeBracketIndex+1);
         return c;
 
     }
@@ -45,7 +49,7 @@ function expressionCalculator(expr) {
 
     function minus(str) {
         console.log("minus "+str);
-        return str.split('-').map(item => multiply(item))
+        return str.split('^').map(item => multiply(item))
             .reduce(function (acum, item) {
                 return (parseFloat(acum) - parseFloat(item));
             });

@@ -139,7 +139,7 @@ describe("Medium", function() {
         expect(() => expressionCalculator(expr)).to.throw("ExpressionError: Brackets must be paired");
     });
 
-    it.only("Brackets test 1", function() {
+    it("Brackets test 1", function() {
         const expr = " 20 - 57 * 12 - (  58 + 84 * 32 / 27  ) ";
         const result = -821.5556;
         expect(Number(expressionCalculator(expr).toFixed(4))).to.equal(result);

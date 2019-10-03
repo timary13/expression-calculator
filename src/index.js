@@ -5,7 +5,7 @@ function eval() {
 
 function expressionCalculator(expr) {
     console.log(expr);
-    findBrackets();
+    return findBrackets();
 
     //find brackets
     function findBrackets() {
@@ -16,7 +16,12 @@ function expressionCalculator(expr) {
             console.log("here");
             throw ("ExpressionError: Brackets must be paired");
         }
-        plus(expr.slice(openBracketIndex + 1, closeBracketIndex));
+        let z = (plus(expr.slice(openBracketIndex + 1, closeBracketIndex))).toString();
+
+        let c = plus(expr.slice(0, openBracketIndex) + z + expr.slice(closeBracketIndex+1));
+        console.log(c);
+        return c;
+
     }
 
     function plus(str) {
@@ -41,10 +46,9 @@ function expressionCalculator(expr) {
             if (parseFloat(item) == 0)
                 throw ("TypeError: Division by zero.");
             else {
-                multiply(item);
+                return multiply(item);
             }
         }).reduce(function (acum, item) {
-            console.log("acum "+ acum + " item " + item);
             console.log("divide "+parseFloat(acum) / parseFloat(item));
             return (parseFloat(acum) / parseFloat(item));
         });
@@ -52,10 +56,12 @@ function expressionCalculator(expr) {
 
     function multiply(str) {
         console.log("multiply "+str);
-        return str.split('*').reduce(function (acum, item) {
-            console.log("multiply "+parseFloat(acum) * parseFloat(item));
-            return (parseFloat(acum) * parseFloat(item));
+        let x = str.split('*').reduce(function (acum, item) {
+            console.log("multiply return "+parseFloat(acum) * parseFloat(item));
+            return parseFloat(acum) * parseFloat(item);
         });
+        console.log("x " + x);
+        return x;
     }
 }
 
